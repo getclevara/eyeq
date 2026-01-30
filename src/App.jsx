@@ -225,39 +225,47 @@ export default function App() {
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled 
           ? 'bg-white/95 backdrop-blur-md shadow-sm py-4' 
-          : 'bg-transparent py-6'
+          : 'bg-slate-900/20 backdrop-blur-sm py-6'
       }`}>
         <div className="max-w-7xl mx-auto px-5 lg:px-8 flex items-center justify-between">
           <a href="#" className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-slate-900 flex items-center justify-center text-white font-semibold text-sm tracking-wide">
+            <div className={`w-11 h-11 rounded-full flex items-center justify-center font-semibold text-sm tracking-wide transition-all duration-500 ${
+              scrolled ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'
+            }`}>
               EQ
             </div>
             <div className="hidden sm:block">
-              <span className="font-semibold text-lg tracking-tight text-slate-900">Eye Q Hawaii</span>
+              <span className={`font-semibold text-lg tracking-tight transition-colors duration-500 ${
+                scrolled ? 'text-slate-900' : 'text-white'
+              }`}>Eye Q Hawaii</span>
             </div>
           </a>
           
           <div className="hidden lg:flex items-center gap-10">
-            <a href="#services" className="text-slate-600 hover:text-slate-900 transition text-sm font-medium">Services</a>
-            <a href="#eyewear" className="text-slate-600 hover:text-slate-900 transition text-sm font-medium">Eyewear</a>
-            <a href="#smart-glasses" className="text-slate-600 hover:text-slate-900 transition text-sm font-medium">Smart Glasses</a>
-            <a href="#about" className="text-slate-600 hover:text-slate-900 transition text-sm font-medium">Dr. Fernandez</a>
-            <a href="#education" className="text-slate-600 hover:text-slate-900 transition text-sm font-medium">Resources</a>
+            <a href="#services" className={`transition text-sm font-medium ${scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-white/90 hover:text-white'}`}>Services</a>
+            <a href="#eyewear" className={`transition text-sm font-medium ${scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-white/90 hover:text-white'}`}>Eyewear</a>
+            <a href="#smart-glasses" className={`transition text-sm font-medium ${scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-white/90 hover:text-white'}`}>Smart Glasses</a>
+            <a href="#about" className={`transition text-sm font-medium ${scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-white/90 hover:text-white'}`}>Dr. Fernandez</a>
+            <a href="#education" className={`transition text-sm font-medium ${scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-white/90 hover:text-white'}`}>Resources</a>
           </div>
           
           <div className="flex items-center gap-4">
-            <a href="tel:+18084644468" className="hidden md:flex items-center gap-2 text-slate-600 hover:text-slate-900 transition">
+            <a href="tel:+18084644468" className={`hidden md:flex items-center gap-2 transition ${scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-white/90 hover:text-white'}`}>
               <Phone className="w-4 h-4" />
               <span className="text-sm font-medium">(808) 464-4468</span>
             </a>
             <button 
               onClick={() => setShowBooking(true)}
-              className="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-slate-800 transition"
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-500 ${
+                scrolled 
+                  ? 'bg-slate-900 text-white hover:bg-slate-800' 
+                  : 'bg-white text-slate-900 hover:bg-white/90'
+              }`}
             >
               Book Appointment
             </button>
             <button 
-              className="lg:hidden p-2 -mr-2"
+              className={`lg:hidden p-2 -mr-2 transition-colors duration-500 ${scrolled ? 'text-slate-900' : 'text-white'}`}
               onClick={() => setMobileMenuOpen(true)}
             >
               <Menu className="w-6 h-6" />
