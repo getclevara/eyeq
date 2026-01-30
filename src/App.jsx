@@ -371,7 +371,7 @@ export default function App() {
               <div className="grid grid-cols-3 divide-x divide-white/20">
                 {[
                   { value: '15+', label: 'Years in Hilo' },
-                  { value: '10k+', label: 'Patients Served' },
+                  { value: '1k+', label: 'Patients Served' },
                   { value: '5.0', label: 'Google Rating' },
                 ].map((stat, i) => (
                   <div key={i} className="py-6 px-8 text-center">
@@ -617,31 +617,39 @@ export default function App() {
             <div>
               <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 px-4 py-2 rounded-full text-sm font-medium mb-8">
                 <Sparkles className="w-4 h-4" />
-                <span>Now Available in Your Prescription</span>
+                <span>Performance AI Glasses – Now in Your Prescription</span>
               </div>
               
               <h2 className="text-4xl lg:text-5xl font-semibold leading-tight mb-6">
-                Meta Ray-Ban
+                Oakley Meta
                 <br />
                 <span className="text-white/60">Smart Glasses</span>
               </h2>
               
               <p className="text-lg text-white/70 mb-10 leading-relaxed">
-                Capture your Hawaii adventures hands-free. Take calls while paddleboarding. Get directions without looking down. These aren't just sunglasses—they're your everyday AI companion, now available with your prescription.
+                Built for athletes who push limits. Capture your Hawaii adventures in stunning 3K video, hands-free. Take calls while paddleboarding. Get real-time AI assistance on the trail. With IPX4 water resistance and 8-hour battery life, these aren't just sunglasses—they're your AI-powered performance partner.
               </p>
               
               <div className="grid sm:grid-cols-2 gap-4 mb-10">
                 {[
-                  { icon: Camera, label: 'Hands-free photos & video', desc: 'Capture moments instantly' },
-                  { icon: Headphones, label: 'Open-ear speakers', desc: 'Stay aware of surroundings' },
-                  { icon: MessageSquare, label: 'Meta AI built-in', desc: 'Ask questions, get answers' },
-                  { icon: Glasses, label: 'Your prescription', desc: 'See clearly, stay connected' },
+                  { icon: Camera, label: '12MP camera, 3K video', desc: 'Ultra-wide POV capture' },
+                  { icon: Headphones, label: '8-hour battery life', desc: 'Plus 48hrs in case' },
+                  { icon: Droplets, label: 'IPX4 water resistant', desc: 'Sweat & splash proof' },
+                  { icon: MessageSquare, label: 'Meta AI built-in', desc: 'Visual intelligence on demand' },
                 ].map((item, i) => (
                   <div key={i} className="bg-white/5 rounded-2xl p-5 border border-white/10">
                     <item.icon className="w-6 h-6 text-white/60 mb-3" />
                     <div className="font-medium text-white mb-1">{item.label}</div>
                     <div className="text-sm text-white/50">{item.desc}</div>
                   </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-3 mb-10">
+                {['Prizm Lens Technology', 'Garmin & Strava Integration', 'Prescription Available'].map((feature, i) => (
+                  <span key={i} className="text-xs bg-white/10 text-white/80 px-3 py-1.5 rounded-full border border-white/10">
+                    {feature}
+                  </span>
                 ))}
               </div>
               
@@ -660,16 +668,16 @@ export default function App() {
             </div>
             
             <div className="relative">
-              <div className="aspect-square rounded-3xl overflow-hidden bg-slate-800">
+              <div className="aspect-square rounded-3xl overflow-hidden bg-black">
                 <img 
-                  src={IMAGES.smartGlasses}
-                  alt="Meta Ray-Ban Smart Glasses"
-                  className="w-full h-full object-cover opacity-90"
+                  src="/images/oakley-meta.png"
+                  alt="Oakley Meta Smart Glasses"
+                  className="w-full h-full object-cover"
                 />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-white text-slate-900 rounded-2xl shadow-2xl p-6">
                 <div className="text-sm text-slate-500 mb-1">Starting at</div>
-                <div className="text-3xl font-bold">$299</div>
+                <div className="text-3xl font-bold">$399</div>
                 <div className="text-sm text-slate-500">+ prescription lenses</div>
               </div>
             </div>
