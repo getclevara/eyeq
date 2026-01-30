@@ -74,11 +74,11 @@ import {
 
 // Placeholder images - REPLACE THESE WITH YOUR ACTUAL PHOTOS
 const IMAGES = {
-  // HERO - Replace with: Wide shot of office OR Dr. Fernandez environmental portrait
-  hero: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=1600&q=80',
+  // HERO - Stunning Hawaii coastline - warm, inviting, paradise feel
+  hero: 'https://images.unsplash.com/photo-1483168527879-c66136b56105?w=1600&q=80',
   
-  // DOCTOR - Replace with: Professional headshot of Dr. Fernandez
-  doctor: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80',
+  // DOCTOR - Dr. Fernandez's actual headshot (in /public/images/)
+  doctor: '/images/dr-fernandez.jpg',
   
   // OFFICE - Replace with actual office photos
   examRoom: 'https://images.unsplash.com/photo-1551884170-09fb70a3a2ed?w=800&q=80',
