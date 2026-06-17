@@ -1,0 +1,104 @@
+---
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site.js';
+import VisionTest from '../components/react/VisionTest.jsx';
+
+const title = 'Free Online Vision Test';
+const description =
+  "Take a free online vision screening from Eye Q Hawaii in Hilo, check visual acuity, color vision, astigmatism, contrast, and run an Amsler grid. A screening, not a diagnosis.";
+
+const modules = [
+  { icon: 'lucide:eye', label: 'Visual Acuity' },
+  { icon: 'lucide:palette', label: 'Color Vision' },
+  { icon: 'lucide:asterisk', label: 'Astigmatism' },
+  { icon: 'lucide:grid-3x3', label: 'Amsler Grid' },
+  { icon: 'lucide:contrast', label: 'Contrast' },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Eye Q Hawaii Free Online Vision Test',
+    url: `${site.url}/vision-test`,
+    applicationCategory: 'HealthApplication',
+    operatingSystem: 'Web browser',
+    description:
+      'A free, browser-based vision screening tool from Eye Q Hawaii in Hilo. It guides you through visual acuity, color vision, astigmatism, an Amsler grid, and contrast sensitivity. This is a screening aid, not a medical diagnosis, eye exam, or prescription.',
+    isAccessibleForFree: true,
+    inLanguage: 'en',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    provider: { '@type': 'MedicalBusiness', name: site.name, telephone: site.phoneHref.replace('tel:', ''), url: site.url },
+    disclaimer:
+      'This online vision test is a screening tool only. It is not a medical diagnosis, eye exam, or prescription and cannot detect many eye conditions. See Dr. Caron Fernandez for a comprehensive exam.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Free Online Vision Test', item: `${site.url}/vision-test` },
+    ],
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <!-- Header (clears the fixed nav with top padding) -->
+  <section class="pt-32 pb-10 bg-gradient-to-b from-sand-50 to-white">
+    <div class="container-width">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="eyebrow mb-4">Free Vision Screening · Hilo, Big Island</p>
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 leading-[1.05] tracking-tight">
+          Free Online Vision Test
+        </h1>
+        <p class="text-lg text-slate-600 mt-6 leading-relaxed">
+          A quick, modern way to check your eyesight from home. This guided screening covers visual acuity, color
+          vision, astigmatism, an Amsler grid, and contrast, in about five minutes, with no sign-up.
+        </p>
+        <p class="text-sm text-slate-500 mt-4">
+          Please note: this is a <strong class="text-slate-700">vision screening tool, not a diagnosis</strong> or eye
+          exam. For complete eye health, see Dr. Caron Fernandez for a comprehensive exam.
+        </p>
+
+        <ul class="mt-8 flex flex-wrap items-center justify-center gap-2.5">
+          {modules.map((m) => (
+            <li class="inline-flex items-center gap-2 bg-white border border-slate-100 shadow-sm text-slate-700 text-sm font-medium px-4 py-2 rounded-full">
+              <Icon name={m.icon} class="w-4 h-4 text-ocean-600" />
+              {m.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- The interactive screening tool -->
+  <section class="pb-24">
+    <div class="container-width">
+      <VisionTest client:load />
+    </div>
+  </section>
+
+  <!-- Reassurance / CTA footer band -->
+  <section class="section-padding bg-slate-900 text-white relative overflow-hidden">
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-ocean-500/20 rounded-full blur-3xl"></div>
+    <div class="container-width relative text-center max-w-2xl mx-auto">
+      <h2 class="font-display text-3xl lg:text-4xl font-semibold leading-tight mb-4">
+        Nothing replaces a comprehensive exam
+      </h2>
+      <p class="text-white/70 mb-8">
+        Even a perfect screening result can miss conditions only an in-person exam can catch. Book with Dr. Fernandez
+        here in Hilo for a complete look at your eye health.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/contact" class="btn-primary text-base px-8 py-4">Book an Exam</a>
+        <a href={site.phoneHref} class="border border-white/30 text-white px-8 py-4 rounded-full font-medium hover:bg-white/10 transition flex items-center justify-center gap-2">
+          <Icon name="lucide:phone" class="w-4 h-4" />
+          {site.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

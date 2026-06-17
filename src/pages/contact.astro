@@ -1,0 +1,308 @@
+---
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site.js';
+import { services } from '../data/services.js';
+
+const serviceOptions = services.map((s) => s.shortTitle);
+
+const dayLabel = (d) => d.slice(0, 3);
+const fmtTime = (t) => {
+  const [h, m] = t.split(':').map(Number);
+  const period = h >= 12 ? 'pm' : 'am';
+  const hr = h % 12 || 12;
+  return m === 0 ? `${hr}${period}` : `${hr}:${String(m).padStart(2, '0')}${period}`;
+};
+
+const mapEmbed = 'https://www.google.com/maps?q=Eye+Q+Hawaii+Hilo+HI&output=embed';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Contact', item: `${site.url}/contact` },
+  ],
+};
+
+const jsonLd = [breadcrumbSchema];
+---
+
+<BaseLayout
+  title="Book an Appointment"
+  description="Book an eye exam at Eye Q Hawaii in Hilo. Call (808) 464-4468 or request an appointment online. Comprehensive eye care for the Big Island ʻohana, Mon-Fri 8am-5pm."
+  jsonLd={jsonLd}
+>
+  <!-- Header -->
+  <section class="pt-32 pb-12 bg-sand-50 border-b border-slate-100">
+    <div class="container-width">
+      <div class="max-w-2xl reveal">
+        <p class="eyebrow mb-4">Contact Eye Q Hawaii</p>
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 leading-[1.05] tracking-tight mb-5">
+          Book an Appointment
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed">
+          We'd love to care for your eyes. Request a visit below, or give us a call. Our Hilo team is happy to help find a time that works for you.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Patient self-service -->
+  <section class="py-8 bg-white border-b border-slate-100">
+    <div class="container-width grid sm:grid-cols-2 gap-4">
+      <a href={site.orderContacts} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-ocean-200 hover:shadow-md transition reveal">
+        <div class="w-12 h-12 rounded-xl bg-ocean-50 flex items-center justify-center flex-shrink-0">
+          <Icon name="lucide:shopping-bag" class="w-6 h-6 text-ocean-600" />
+        </div>
+        <div class="flex-1">
+          <div class="font-semibold text-slate-900 flex items-center gap-1.5">
+            Order Contact Lenses
+            <Icon name="lucide:external-link" class="w-3.5 h-3.5 text-slate-400" />
+          </div>
+          <p class="text-sm text-slate-500">Reorder your contacts online, shipped to your door.</p>
+        </div>
+      </a>
+      <a href={site.payOnline} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-ocean-200 hover:shadow-md transition reveal">
+        <div class="w-12 h-12 rounded-xl bg-ocean-50 flex items-center justify-center flex-shrink-0">
+          <Icon name="lucide:credit-card" class="w-6 h-6 text-ocean-600" />
+        </div>
+        <div class="flex-1">
+          <div class="font-semibold text-slate-900 flex items-center gap-1.5">
+            Pay Your Bill Online
+            <Icon name="lucide:external-link" class="w-3.5 h-3.5 text-slate-400" />
+          </div>
+          <p class="text-sm text-slate-500">Securely pay your balance through our payment portal.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Two-column: details + form -->
+  <section class="section-padding">
+    <div class="container-width grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+      <!-- LEFT: NAP, hours, social, map -->
+      <div class="reveal">
+        <h2 class="font-display text-2xl lg:text-3xl font-semibold text-slate-900 mb-8">
+          Visit us in Hilo
+        </h2>
+
+        <ul class="space-y-6">
+          <li class="flex items-start gap-4">
+            <div class="w-11 h-11 rounded-xl bg-ocean-50 flex items-center justify-center flex-shrink-0">
+              <Icon name="lucide:phone" class="w-5 h-5 text-ocean-600" />
+            </div>
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-1">Phone</p>
+              <a href={site.phoneHref} class="text-lg text-slate-900 font-medium hover:text-ocean-700 transition">
+                {site.phone}
+              </a>
+            </div>
+          </li>
+
+          <li class="flex items-start gap-4">
+            <div class="w-11 h-11 rounded-xl bg-ocean-50 flex items-center justify-center flex-shrink-0">
+              <Icon name="lucide:mail" class="w-5 h-5 text-ocean-600" />
+            </div>
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-1">Email</p>
+              <a href={`mailto:${site.email}`} class="text-lg text-slate-900 font-medium hover:text-ocean-700 transition break-all">
+                {site.email}
+              </a>
+            </div>
+          </li>
+
+          <li class="flex items-start gap-4">
+            <div class="w-11 h-11 rounded-xl bg-ocean-50 flex items-center justify-center flex-shrink-0">
+              <Icon name="lucide:map-pin" class="w-5 h-5 text-ocean-600" />
+            </div>
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-1">Location</p>
+              <p class="text-lg text-slate-900 font-medium">{site.address.locality}, {site.address.regionName}</p>
+              <p class="text-slate-500 text-sm">Serving the {site.address.area}</p>
+            </div>
+          </li>
+
+          <li class="flex items-start gap-4">
+            <div class="w-11 h-11 rounded-xl bg-ocean-50 flex items-center justify-center flex-shrink-0">
+              <Icon name="lucide:clock" class="w-5 h-5 text-ocean-600" />
+            </div>
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-1">Hours</p>
+              <dl class="space-y-1">
+                {site.hours.map((h) => (
+                  <div class="flex items-center gap-4 text-slate-700">
+                    <dt class="w-12 font-medium">{dayLabel(h.day)}</dt>
+                    <dd>{fmtTime(h.open)} - {fmtTime(h.close)}</dd>
+                  </div>
+                ))}
+                <div class="flex items-center gap-4 text-slate-400">
+                  <dt class="w-12 font-medium">Sat</dt>
+                  <dd>Closed</dd>
+                </div>
+                <div class="flex items-center gap-4 text-slate-400">
+                  <dt class="w-12 font-medium">Sun</dt>
+                  <dd>Closed</dd>
+                </div>
+              </dl>
+            </div>
+          </li>
+        </ul>
+
+        <!-- Social -->
+        <div class="mt-8 pt-8 border-t border-slate-100">
+          <p class="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-3">Follow along</p>
+          <div class="flex gap-3">
+            <a
+              href={site.social.instagram}
+              aria-label="Eye Q Hawaii on Instagram"
+              class="w-11 h-11 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-ocean-700 transition"
+            >
+              <Icon name="lucide:instagram" class="w-5 h-5" />
+            </a>
+            <a
+              href={site.social.facebook}
+              aria-label="Eye Q Hawaii on Facebook"
+              class="w-11 h-11 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-ocean-700 transition"
+            >
+              <Icon name="lucide:facebook" class="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+
+        <!-- Map -->
+        <div class="mt-8 rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
+          <iframe
+            src={mapEmbed}
+            title="Map of Eye Q Hawaii in Hilo, Hawaii"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="w-full h-72 border-0"
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- RIGHT: appointment form -->
+      <div class="reveal">
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-8 lg:p-10">
+          <h2 class="font-display text-2xl lg:text-3xl font-semibold text-slate-900 mb-2">
+            Request an appointment
+          </h2>
+          <p class="text-slate-600 mb-8">
+            Tell us a little about your visit and we'll confirm your time by phone or email.
+          </p>
+
+          <form
+            action={`mailto:${site.email}`}
+            method="post"
+            enctype="text/plain"
+            class="space-y-5"
+          >
+            <!-- Service -->
+            <div>
+              <label for="service" class="block text-sm font-medium text-slate-700 mb-1.5">
+                What can we help with?
+              </label>
+              <select
+                id="service"
+                name="service"
+                required
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 transition"
+              >
+                <option value="" disabled selected>Select a service…</option>
+                {serviceOptions.map((opt) => (
+                  <option value={opt}>{opt}</option>
+                ))}
+                <option value="Other">Something else</option>
+              </select>
+            </div>
+
+            <!-- Preferred date -->
+            <div>
+              <label for="date" class="block text-sm font-medium text-slate-700 mb-1.5">
+                Preferred date
+              </label>
+              <input
+                id="date"
+                name="preferred_date"
+                type="date"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 transition"
+              />
+            </div>
+
+            <!-- Name -->
+            <div>
+              <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">
+                Full name
+              </label>
+              <input
+                id="name"
+                name="full_name"
+                type="text"
+                autocomplete="name"
+                required
+                placeholder="Your full name"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 transition"
+              />
+            </div>
+
+            <!-- Phone + Email -->
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="phone" class="block text-sm font-medium text-slate-700 mb-1.5">
+                  Phone
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  autocomplete="tel"
+                  required
+                  placeholder="(808) 000-0000"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 transition"
+                />
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">
+                  Email <span class="text-slate-400 font-normal">(optional)</span>
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                  class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 transition"
+                />
+              </div>
+            </div>
+
+            <!-- Message -->
+            <div>
+              <label for="message" class="block text-sm font-medium text-slate-700 mb-1.5">
+                Anything else? <span class="text-slate-400 font-normal">(optional)</span>
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                placeholder="Insurance, symptoms, preferred time of day…"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 transition resize-y"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary w-full justify-center text-base px-8 py-4 group">
+              Request Appointment
+              <Icon name="lucide:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+
+            <p class="text-sm text-slate-500 text-center pt-1">
+              Prefer to talk? Call
+              <a href={site.phoneHref} class="text-ocean-700 font-medium hover:underline">{site.phone}</a>.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
