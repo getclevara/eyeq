@@ -1,0 +1,152 @@
+---
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site.js';
+import { services } from '../data/services.js';
+import { faqs } from '../data/content.js';
+
+// Aggregate a curated set of service FAQs, grouped by service, so the page is
+// genuinely useful AND rich for answer engines. We keep every service so the
+// FAQPage schema is thorough.
+const serviceFaqGroups = services
+  .filter((s) => Array.isArray(s.faqs) && s.faqs.length > 0)
+  .map((s) => ({
+    title: s.shortTitle,
+    slug: s.slug,
+    icon: s.icon,
+    faqs: s.faqs,
+  }));
+
+// Combine ALL Q&As rendered on the page into one FAQPage schema for AEO.
+const allFaqs = [
+  ...faqs,
+  ...serviceFaqGroups.flatMap((g) => g.faqs),
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: allFaqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const jsonLd = [faqSchema];
+---
+
+<BaseLayout
+  title="Frequently Asked Questions"
+  description="Answers to common questions about eye exams, contacts, pediatric and diabetic eye care, and visiting Eye Q Hawaii in Hilo on the Big Island."
+  jsonLd={jsonLd}
+>
+  <!-- Header -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-sand-50 to-white pt-32 pb-14 lg:pt-40 lg:pb-16">
+    <div class="absolute -top-24 right-0 w-96 h-96 bg-ocean-100/40 rounded-full blur-3xl" aria-hidden="true"></div>
+    <div class="container-width relative">
+      <div class="max-w-3xl reveal">
+        <p class="eyebrow mb-4">Help &amp; Answers</p>
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 leading-[1.05] tracking-tight mb-6">
+          Frequently Asked Questions
+        </h1>
+        <p class="text-xl text-slate-600 leading-relaxed">
+          Everything you might be wondering about visiting Eye Q Hawaii in Hilo, from booking and
+          hours to exams, contacts, and specialized care for your whole ʻohana. Still have a question?
+          We're happy to help.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- General FAQs -->
+  <section class="pb-16 lg:pb-20">
+    <div class="container-width">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="font-display text-2xl lg:text-3xl font-semibold text-slate-900 mb-6 reveal">
+          About Eye Q Hawaii
+        </h2>
+        <div class="divide-y divide-slate-100 border-y border-slate-100 reveal">
+          {faqs.map((f) => (
+            <details class="group py-1">
+              <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-left font-medium text-slate-900 hover:text-ocean-700 transition-colors">
+                <span>{f.q}</span>
+                <Icon
+                  name="lucide:plus"
+                  class="w-5 h-5 flex-shrink-0 text-ocean-500 transition-transform duration-200 group-open:rotate-45"
+                />
+              </summary>
+              <div class="pb-5 pr-9 text-slate-600 leading-relaxed">{f.a}</div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service-specific FAQs, grouped -->
+  <section class="pb-20 lg:pb-28 bg-sand-50/60 border-y border-slate-100">
+    <div class="container-width pt-16 lg:pt-20">
+      <div class="max-w-3xl mx-auto mb-12 reveal">
+        <p class="eyebrow mb-3">By Service</p>
+        <h2 class="font-display text-2xl lg:text-3xl font-semibold text-slate-900">
+          Questions about specific care
+        </h2>
+        <p class="text-lg text-slate-600 mt-4">
+          Quick answers organized by the service you're considering. Each links to the full service page.
+        </p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-10">
+        {serviceFaqGroups.map((g) => (
+          <div class="reveal">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center flex-shrink-0">
+                <Icon name={g.icon} class="w-5 h-5 text-ocean-600" />
+              </div>
+              <h3 class="font-display text-xl font-semibold text-slate-900">
+                <a href={`/services/${g.slug}`} class="hover:text-ocean-700 transition-colors">{g.title}</a>
+              </h3>
+            </div>
+            <div class="divide-y divide-slate-200/70 bg-white rounded-2xl border border-slate-100 px-5">
+              {g.faqs.map((f) => (
+                <details class="group py-1">
+                  <summary class="flex items-center justify-between gap-4 cursor-pointer list-none py-4 text-left font-medium text-slate-900 hover:text-ocean-700 transition-colors">
+                    <span>{f.q}</span>
+                    <Icon
+                      name="lucide:plus"
+                      class="w-5 h-5 flex-shrink-0 text-ocean-500 transition-transform duration-200 group-open:rotate-45"
+                    />
+                  </summary>
+                  <div class="pb-5 pr-9 text-slate-600 leading-relaxed">{f.a}</div>
+                </details>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="relative section-padding overflow-hidden bg-slate-900 text-white">
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-ocean-500/20 rounded-full blur-3xl" aria-hidden="true"></div>
+    <div class="absolute -bottom-32 -left-24 w-96 h-96 bg-ocean-400/10 rounded-full blur-3xl" aria-hidden="true"></div>
+    <div class="container-width relative text-center max-w-3xl mx-auto">
+      <h2 class="font-display text-4xl lg:text-5xl font-semibold leading-tight mb-6">
+        Still have a question?
+      </h2>
+      <p class="text-xl text-white/70 mb-10">
+        Reach out and we'll get you a clear answer, or book your visit and we'll cover it in person.
+        Same-week appointments are typically available in Hilo.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/contact" class="btn-primary text-base px-8 py-4">Schedule an Appointment</a>
+        <a href={site.phoneHref} class="border border-white/30 text-white px-8 py-4 rounded-full font-medium hover:bg-white/10 transition flex items-center justify-center gap-2">
+          <Icon name="lucide:phone" class="w-4 h-4" />
+          {site.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

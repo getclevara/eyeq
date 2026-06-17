@@ -1,0 +1,101 @@
+---
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site.js';
+import { services } from '../../data/services.js';
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Eye Care Services at Eye Q Hawaii',
+  itemListElement: services.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: s.title,
+    description: s.summary,
+    url: `${site.url}/services/${s.slug}`,
+  })),
+};
+
+const jsonLd = [itemListSchema];
+---
+
+<BaseLayout
+  title="Eye Care Services in Hilo, Hawaii"
+  description="Comprehensive eye care services in Hilo on the Big Island, exams, glasses, contacts, pediatric, diabetic, dry eye, and emergency care at Eye Q Hawaii."
+  jsonLd={jsonLd}
+>
+  <!-- Header -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-sand-50 to-white pt-32 pb-16 lg:pt-40 lg:pb-20">
+    <div class="absolute -top-24 right-0 w-96 h-96 bg-ocean-100/40 rounded-full blur-3xl" aria-hidden="true"></div>
+    <div class="container-width relative">
+      <div class="max-w-3xl reveal">
+        <p class="eyebrow mb-4">Our Services</p>
+        <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 leading-[1.05] tracking-tight mb-6">
+          Eye Care Services in Hilo, Hawaii
+        </h1>
+        <p class="text-xl text-slate-600 leading-relaxed">
+          From comprehensive eye exams to specialized treatment, Eye Q Hawaii delivers complete vision
+          care for every age and need on the Big Island. Dr. Caron Fernandez, O.D. combines advanced
+          diagnostic technology with genuine aloha, so you and your ʻohana see clearly and stay healthy.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+          <a href="/contact" class="btn-primary text-base px-8 py-4 group">
+            Schedule Your Visit
+            <Icon name="lucide:arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </a>
+          <a href={site.phoneHref} class="btn-secondary text-base group">
+            <Icon name="lucide:phone" class="w-4 h-4" />
+            {site.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services grid -->
+  <section class="pb-20 lg:pb-28">
+    <div class="container-width">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map((s) => (
+          <a href={`/services/${s.slug}`} class="group bg-white rounded-2xl border border-slate-100 p-6 hover:shadow-xl hover:border-ocean-100 transition-all duration-300 reveal flex flex-col">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-ocean-50 flex items-center justify-center group-hover:bg-ocean-500 transition-colors">
+                <Icon name={s.icon} class="w-6 h-6 text-ocean-600 group-hover:text-white transition-colors" />
+              </div>
+              <span class="text-xs text-slate-400 bg-slate-50 px-2.5 py-1 rounded-full">{s.duration}</span>
+            </div>
+            <h2 class="text-lg font-semibold text-slate-900 mb-2">{s.title}</h2>
+            <p class="text-slate-600 text-sm flex-1">{s.summary}</p>
+            <div class="mt-4 flex items-center text-ocean-600 text-sm font-medium">
+              Learn more
+              <Icon name="lucide:chevron-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA band -->
+  <section class="relative section-padding overflow-hidden bg-slate-900 text-white">
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-ocean-500/20 rounded-full blur-3xl" aria-hidden="true"></div>
+    <div class="absolute -bottom-32 -left-24 w-96 h-96 bg-ocean-400/10 rounded-full blur-3xl" aria-hidden="true"></div>
+    <div class="container-width relative text-center max-w-3xl mx-auto">
+      <h2 class="font-display text-4xl lg:text-5xl font-semibold leading-tight mb-6">
+        Not sure which service you need?
+      </h2>
+      <p class="text-xl text-white/70 mb-10">
+        Tell us what's going on and we'll point you in the right direction. Same-week appointments
+        are typically available in Hilo.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/contact" class="btn-primary text-base px-8 py-4">Schedule an Appointment</a>
+        <a href={site.phoneHref} class="border border-white/30 text-white px-8 py-4 rounded-full font-medium hover:bg-white/10 transition flex items-center justify-center gap-2">
+          <Icon name="lucide:phone" class="w-4 h-4" />
+          {site.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

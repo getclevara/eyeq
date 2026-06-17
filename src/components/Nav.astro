@@ -1,0 +1,162 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site, nav } from '../data/site.js';
+
+const { heroOverlay = false } = Astro.props;
+const current = Astro.url.pathname;
+const isActive = (href) => current === href || (href !== '/' && current.startsWith(href));
+---
+
+<header
+  id="site-nav"
+  data-hero={heroOverlay ? 'true' : 'false'}
+  class:list={[
+    'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
+    heroOverlay ? 'is-overlay' : 'is-solid bg-white/90 backdrop-blur-md shadow-sm',
+  ]}
+>
+  <!-- Utility bar: patient self-service -->
+  <div class="util-bar hidden sm:block">
+    <div class="container-width flex items-center justify-end gap-6 py-1.5">
+      <a href={site.payOnline} target="_blank" rel="noopener noreferrer" class="util-link inline-flex items-center gap-1.5 text-xs font-semibold">
+        <Icon name="lucide:credit-card" class="w-3.5 h-3.5" />
+        Pay Online
+      </a>
+      <a href="/contact" class="util-link inline-flex items-center gap-1.5 text-xs font-medium">
+        <Icon name="lucide:calendar" class="w-3.5 h-3.5" />
+        Book a Visit
+      </a>
+      <a href={site.phoneHref} class="util-link hidden md:inline-flex items-center gap-1.5 text-xs font-medium">
+        <Icon name="lucide:phone" class="w-3.5 h-3.5" />
+        {site.phone}
+      </a>
+    </div>
+  </div>
+
+  <nav class="container-width flex items-center justify-between py-3 lg:py-4" aria-label="Primary">
+    <a href="/" class="flex items-center gap-3 group">
+      <span
+        class="nav-mark w-11 h-11 rounded-full flex items-center justify-center font-display font-semibold text-sm tracking-wide transition-all duration-500"
+        >EQ</span
+      >
+      <span class="nav-word font-display font-semibold text-lg tracking-tight transition-colors duration-500"
+        >{site.name}</span
+      >
+    </a>
+
+    <div class="hidden lg:flex items-center gap-8">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class:list={['nav-link text-sm font-medium transition-colors duration-300', isActive(item.href) && 'is-current']}
+          aria-current={isActive(item.href) ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a href={site.orderContacts} target="_blank" rel="noopener noreferrer" class="nav-cta inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-500">
+        <Icon name="lucide:shopping-bag" class="w-4 h-4" />
+        Order Contacts
+      </a>
+      <button
+        id="nav-toggle"
+        class="nav-link lg:hidden p-2 -mr-2"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <Icon name="lucide:menu" class="w-6 h-6" />
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" class="fixed inset-0 z-[60] hidden lg:hidden" role="dialog" aria-modal="true">
+  <div id="mobile-backdrop" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl p-6 overflow-y-auto">
+    <button id="mobile-close" class="absolute top-6 right-6 text-slate-700" aria-label="Close menu">
+      <Icon name="lucide:x" class="w-6 h-6" />
+    </button>
+    <div class="mt-12 space-y-1">
+      {nav.map((item) => (
+        <a href={item.href} class="block py-3 text-lg font-medium text-slate-800 hover:text-ocean-600 transition border-b border-slate-100">
+          {item.label}
+        </a>
+      ))}
+    </div>
+
+    <div class="mt-6 grid grid-cols-2 gap-3">
+      <a href={site.orderContacts} target="_blank" rel="noopener noreferrer" class="flex flex-col items-start gap-2 p-4 rounded-2xl bg-sand-50 border border-sand-100">
+        <Icon name="lucide:shopping-bag" class="w-5 h-5 text-ocean-600" />
+        <span class="text-sm font-semibold text-slate-800 leading-tight">Order Contacts</span>
+      </a>
+      <a href={site.payOnline} target="_blank" rel="noopener noreferrer" class="flex flex-col items-start gap-2 p-4 rounded-2xl bg-sand-50 border border-sand-100">
+        <Icon name="lucide:credit-card" class="w-5 h-5 text-ocean-600" />
+        <span class="text-sm font-semibold text-slate-800 leading-tight">Pay Online</span>
+      </a>
+    </div>
+
+    <div class="mt-6 pt-6 border-t border-slate-100">
+      <a href={site.phoneHref} class="flex items-center gap-3 text-slate-600 mb-4">
+        <Icon name="lucide:phone" class="w-5 h-5" />
+        <span>{site.phone}</span>
+      </a>
+      <a href="/contact" class="btn-secondary w-full">Book a Visit</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Overlay (transparent) state, used over dark heroes */
+  #site-nav.is-overlay .util-bar { @apply border-b border-white/15; }
+  #site-nav.is-overlay .util-link { @apply text-white/75 hover:text-white; }
+  #site-nav.is-overlay .nav-mark { @apply bg-white text-slate-900; }
+  #site-nav.is-overlay .nav-word { @apply text-white; }
+  #site-nav.is-overlay .nav-link { @apply text-white/90 hover:text-white; }
+  #site-nav.is-overlay .nav-link.is-current { @apply text-white; }
+  #site-nav.is-overlay .nav-cta { @apply bg-white text-slate-900 hover:bg-white/90; }
+
+  /* Solid state, default, and overlay after scroll */
+  #site-nav.is-solid .util-bar { @apply border-b border-slate-100; }
+  #site-nav.is-solid .util-link { @apply text-slate-500 hover:text-ocean-600; }
+  #site-nav.is-solid .nav-mark { @apply bg-slate-900 text-white; }
+  #site-nav.is-solid .nav-word { @apply text-slate-900; }
+  #site-nav.is-solid .nav-link { @apply text-slate-600 hover:text-ocean-600; }
+  #site-nav.is-solid .nav-link.is-current { @apply text-ocean-600; }
+  #site-nav.is-solid .nav-cta { @apply bg-slate-900 text-white hover:bg-slate-800; }
+</style>
+
+<script>
+  const navEl = document.getElementById('site-nav');
+  const isHero = navEl?.dataset.hero === 'true';
+
+  function applyScrollState() {
+    if (!navEl || !isHero) return;
+    const scrolled = window.scrollY > 40;
+    navEl.classList.toggle('is-overlay', !scrolled);
+    navEl.classList.toggle('is-solid', scrolled);
+    navEl.classList.toggle('bg-white/90', scrolled);
+    navEl.classList.toggle('backdrop-blur-md', scrolled);
+    navEl.classList.toggle('shadow-sm', scrolled);
+  }
+  if (isHero) {
+    applyScrollState();
+    window.addEventListener('scroll', applyScrollState, { passive: true });
+  }
+
+  // Mobile menu
+  const menu = document.getElementById('mobile-menu');
+  const toggle = document.getElementById('nav-toggle');
+  const close = document.getElementById('mobile-close');
+  const backdrop = document.getElementById('mobile-backdrop');
+  const open = () => { menu?.classList.remove('hidden'); toggle?.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; };
+  const hide = () => { menu?.classList.add('hidden'); toggle?.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; };
+  toggle?.addEventListener('click', open);
+  close?.addEventListener('click', hide);
+  backdrop?.addEventListener('click', hide);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hide(); });
+</script>

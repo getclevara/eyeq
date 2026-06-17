@@ -1,0 +1,89 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site } from '../data/site.js';
+import { services } from '../data/services.js';
+
+const year = 2026;
+const footerServices = services.slice(0, 6);
+---
+
+<footer class="bg-slate-900 text-white pt-20 pb-10">
+  <div class="container-width">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
+      <div class="lg:col-span-2">
+        <a href="/" class="flex items-center gap-3 mb-6">
+          <span class="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-900 font-display font-semibold text-sm">EQ</span>
+          <span class="font-display font-semibold text-xl">{site.name}</span>
+        </a>
+        <p class="text-slate-400 max-w-sm mb-6 leading-relaxed">
+          Hilo's trusted eye care destination. Comprehensive vision services with aloha, caring for Hawaii's eyes since 2008, an independent practice since 2021.
+        </p>
+
+        <div class="inline-flex items-center bg-white rounded-xl px-4 py-3 shadow-sm mb-6">
+          <img src="/images/vision-source-member.png" alt="A Member of Vision Source" class="h-5 w-auto" width="240" height="26" />
+        </div>
+
+        <div class="flex gap-3">
+          <a href={site.social.instagram} aria-label="Instagram" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
+            <Icon name="lucide:instagram" class="w-5 h-5" />
+          </a>
+          <a href={site.social.facebook} aria-label="Facebook" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
+            <Icon name="lucide:facebook" class="w-5 h-5" />
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="font-semibold mb-4">Services</h2>
+        <ul class="space-y-3 text-slate-400">
+          {footerServices.map((s) => (
+            <li><a href={`/services/${s.slug}`} class="hover:text-white transition">{s.shortTitle}</a></li>
+          ))}
+          <li><a href="/vision-test" class="hover:text-white transition">Free Online Vision Test</a></li>
+          <li>
+            <a href={site.orderContacts} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-ocean-300 hover:text-white transition">
+              Order Contacts
+              <Icon name="lucide:external-link" class="w-3.5 h-3.5" />
+            </a>
+          </li>
+          <li>
+            <a href={site.payOnline} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-ocean-300 hover:text-white transition">
+              Pay Online
+              <Icon name="lucide:external-link" class="w-3.5 h-3.5" />
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="font-semibold mb-4">Contact</h2>
+        <ul class="space-y-3 text-slate-400">
+          <li class="flex items-center gap-2">
+            <Icon name="lucide:phone" class="w-4 h-4" />
+            <a href={site.phoneHref} class="hover:text-white transition">{site.phone}</a>
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon name="lucide:mail" class="w-4 h-4" />
+            <a href={`mailto:${site.email}`} class="hover:text-white transition">{site.email}</a>
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon name="lucide:map-pin" class="w-4 h-4" />
+            <span>Hilo, Hawaii</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon name="lucide:clock" class="w-4 h-4" />
+            <span>{site.hoursLabel}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+      <p>© {year} {site.name}. All rights reserved.</p>
+      <div class="flex gap-8">
+        <a href="/privacy" class="hover:text-white transition">Privacy Policy</a>
+        <a href="/faq" class="hover:text-white transition">FAQ</a>
+      </div>
+    </div>
+  </div>
+</footer>

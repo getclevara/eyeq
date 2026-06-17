@@ -1,14 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{astro,html,js,jsx,ts,tsx,md,mdx}",
   ],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Outfit', 'system-ui', 'sans-serif'],
-        display: ['Fraunces', 'serif'],
+        sans: ['Switzer', 'system-ui', 'sans-serif'],
+        display: ['Zodiak', 'Georgia', 'serif'],
       },
       colors: {
         ocean: {
