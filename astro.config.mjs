@@ -3,11 +3,17 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
+import vercel from '@astrojs/vercel/static';
 
 // https://astro.build
 export default defineConfig({
   site: 'https://eyeqhawaii.com',
   output: 'static',
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
   integrations: [
     react(),
     tailwind({ applyBaseStyles: false }),
