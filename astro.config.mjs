@@ -6,7 +6,7 @@ import icon from 'astro-icon';
 
 // https://astro.build
 export default defineConfig({
-  site: 'https://eyeqhawaii.com',
+  site: 'https://www.eyeqhawaii.com',
   output: 'static',
   integrations: [
     react(),
